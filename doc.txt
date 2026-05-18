@@ -1,0 +1,17 @@
+IMPORTANTE
+"printer:POS-58"
+
+Puede cambiar.
+
+En Windows muchas veces es:
+
+EPSON
+POS-58
+ITPOS
+USB001
+
+Tenés que usar EXACTAMENTE el nombre de Windows.
+
+Cómo verlo
+PowerShell
+Get-Printer

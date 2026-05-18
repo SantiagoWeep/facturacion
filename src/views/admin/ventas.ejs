@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<%- include('../partials/head') %>
+
+<body class="bg-light">
+
+<div class="d-flex">
+
+    <%- include('../partials/sidebar') %>
+
+    <div class="flex-grow-1">
+
+        <%- include('../partials/navbar') %>
+
+        <div class="container-fluid p-4">
+
+            <h2 class="mb-4">
+                Historial de Ventas
+            </h2>
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <table class="table table-hover">
+
+                        <thead>
+
+                            <tr>
+                                <th>Detalle</th>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Pago</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <% ventas.forEach(venta => { %>
+
+                                <tr>
+
+                                    <td>
+                                    <a
+                                        href="/admin/ventas/<%= venta.id %>"
+                                        class="btn btn-sm btn-dark"
+                                    >
+                                        <i class="bi bi-receipt"></i>
+                                        Ver
+                                    </a>
+                                </td>
+
+                                    <td>
+                                    <%= venta.id %>
+                                </td>
+
+                                <td>
+                                    <%= new Date(venta.fecha).toLocaleString('es-AR', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    }) %>
+                                </td>
+
+                                    <td>
+                                        $<%= venta.total %>
+                                    </td>
+
+                                    <td>
+                                        <%= venta.metodo_pago %>
+                                    </td>
+
+                                    <td>
+                                        <%= venta.estado %>
+                                    </td>
+
+                                    <td>
+
+                                        <a
+                                            href="/admin/ventas/<%= venta.id %>"
+                                            class="btn btn-sm btn-primary"
+                                        >
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a
+                                            href="/admin/ventas/<%= venta.id %>/imprimir"
+                                            class="btn btn-sm btn-dark"
+                                        >
+                                            <i class="bi bi-printer"></i>
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            <% }) %>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<%- include('../partials/head') %>
+
+<body class="bg-light">
+
+<div class="d-flex">
+
+    <%- include('../partials/sidebar') %>
+
+    <div class="flex-grow-1">
+
+        <%- include('../partials/navbar') %>
+
+        <div class="container-fluid p-4">
+
+            <div class="d-flex justify-content-between mb-4">
+
+                <h2>
+                    Venta #<%= venta.id %>
+                </h2>
+
+                <button
+                    onclick="window.print()"
+                    class="btn btn-dark"
+                >
+                    Imprimir
+                </button>
+
+            </div>
+
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Fecha:</strong>
+
+                        <%= new Date(venta.fecha)
+                        .toLocaleString('es-AR') %>
+                    </p>
+
+                    <p>
+                        <strong>Método pago:</strong>
+
+                        <%= venta.metodo_pago %>
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+
+                        <%= venta.estado %>
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <table class="table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Subtotal</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <% detalles.forEach(item => { %>
+
+                                <tr>
+
+                                    <td>
+                                        <%= item.producto_nombre %>
+                                    </td>
+
+                                    <td>
+                                        <%= item.cantidad %>
+                                    </td>
+
+                                    <td>
+                                        $<%= item.precio_unitario %>
+                                    </td>
+
+                                    <td>
+                                        $<%= item.subtotal %>
+                                    </td>
+
+                                </tr>
+
+                            <% }) %>
+
+                        </tbody>
+
+                    </table>
+
+                    <div class="text-end mt-4">
+
+                        <h4>
+
+                            Total:
+                            $<%= venta.total %>
+
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
