@@ -432,65 +432,57 @@ document
 
 });
 
-document
-.getElementById("finalizarVentaBtn")
-.addEventListener("click", async () => {
-
+document.getElementById("finalizarVentaBtn").addEventListener("click", async () => {
     if (carrito.length === 0) {
-
         alert("Carrito vacío");
-
         return;
-
     }
 
-    const metodo_pago =
-        document.getElementById("metodoPago").value
+    const metodo_pago = document.getElementById("metodoPago").value;
 
     try {
+        const response = await fetch("/api/ventas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ carrito, metodo_pago })
+        });
 
-        const response = await fetch(
-            "/api/ventas",
-            {
+        const data = await response.json();
 
-                method: "POST",
+        if (data.success) {
+            // Mensaje de éxito con botón de imprimir
+            const mensaje = `
+                <div class="alert alert-success mt-4">
+                    <h5>✅ Venta #${data.ventaId} guardada correctamente</h5>
+                    <button onclick="imprimirTicket(${data.ventaId})" 
+                            class="btn btn-dark btn-lg mt-3">
+                        <i class="bi bi-printer"></i> Imprimir Ticket
+                    </button>
+                </div>
+            `;
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    carrito,
-                    metodo_pago
-
-                })
-
+            // Insertar el mensaje después del resumen
+            const resumenCard = document.querySelector(".col-md-4 .card");
+            if (resumenCard) {
+                resumenCard.insertAdjacentHTML("afterend", mensaje);
             }
-        );
 
-        const data =
-            await response.json();
+            // Limpiar carrito
+            carrito = [];
+            renderCarrito();
 
-        alert(
-            "Venta guardada correctamente"
-        );
-
-        carrito = [];
-
-        renderCarrito();
-
-        console.log(data);
-
+            alert(`Venta #${data.ventaId} registrada correctamente`);
+        }
     } catch (error) {
-
         console.log(error);
-
         alert("Error guardando venta");
-
     }
-
 });
+
+// Función para imprimir
+function imprimirTicket(id) {
+    window.open(`/admin/ventas/${id}/print`, '_blank');
+}
 
 
 cargarProductos();

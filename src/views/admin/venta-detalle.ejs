@@ -21,12 +21,10 @@
                     Venta #<%= venta.id %>
                 </h2>
 
-                <button
-                    onclick="window.print()"
-                    class="btn btn-dark"
-                >
-                    Imprimir
-                </button>
+                <button onclick="window.open('/admin/ventas/<%= venta.id %>/print', '_blank')" 
+                    class="btn btn-dark">
+                <i class="bi bi-printer"></i> Imprimir Ticket
+            </button>
 
             </div>
 
@@ -128,5 +126,9 @@
 </div>
 
 </body>
-
+<script>
+function reimprimir(id) {
+    window.location.href = `/admin/ventas/${id}/imprimir`;
+}
+</script>
 </html>

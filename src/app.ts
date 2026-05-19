@@ -46,7 +46,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/ventas", ventasRoutes);
-app.use("/productos", productosRoutes);
+app.use("/admin/productos", productosRoutes);
 app.use("/api/ventas", apiVentasRoutes);
 
 app.get("/", (req: Request, res: Response) => {

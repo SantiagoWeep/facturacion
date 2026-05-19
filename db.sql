@@ -220,6 +220,9 @@ VALUES
     1
 );
 
-SELECT * FROM ventas;
+ALTER TABLE productos 
+ADD COLUMN categoria VARCHAR(100) DEFAULT 'Sin categoría';
 
-SELECT * FROM detalle_venta;
+-- Actualizar productos existentes
+UPDATE productos SET categoria = 'Ropa' WHERE nombre LIKE '%Remera%' OR nombre LIKE '%Medias%';
+UPDATE productos SET categoria = 'Accesorios' WHERE nombre LIKE '%Aros%' OR nombre LIKE '%Gorra%' OR nombre LIKE '%Billetera%';
