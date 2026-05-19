@@ -15,25 +15,30 @@
 
         <div class="container-fluid p-4">
 
-            <h1 class="mb-4">
+            <h2 class="mb-4">
                 Dashboard
-            </h1>
+            </h2>
 
-            <div class="row">
+            <!-- CARDS -->
+            <div class="row g-4 mb-4">
 
                 <div class="col-md-3">
 
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm border-0">
 
                         <div class="card-body">
 
-                            <h5>
+                            <h6 class="text-muted">
                                 Ventas Hoy
-                            </h5>
+                            </h6>
 
-                            <h3>
-                                $0
-                            </h3>
+                            <h2>
+                                $<%= ventasHoy.total %>
+                            </h2>
+
+                            <small>
+                                <%= ventasHoy.cantidad %> ventas
+                            </small>
 
                         </div>
 
@@ -43,21 +48,225 @@
 
                 <div class="col-md-3">
 
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm border-0">
 
                         <div class="card-body">
 
-                            <h5>
+                            <h6 class="text-muted">
                                 Ventas Mes
-                            </h5>
+                            </h6>
 
-                            <h3>
-                                $0
-                            </h3>
+                            <h2>
+                                $<%= ventasMes.total %>
+                            </h2>
+
+                            <small>
+                                <%= ventasMes.cantidad %> ventas
+                            </small>
 
                         </div>
 
                     </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="card shadow-sm border-0">
+
+                        <div class="card-body">
+
+                            <h6 class="text-muted">
+                                Ticket Promedio
+                            </h6>
+
+                            <h2>
+                                $<%= Number(promedioVenta.promedio).toFixed(2) %>
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="card shadow-sm border-0">
+
+                        <div class="card-body">
+
+                            <h6 class="text-muted">
+                                Última Venta
+                            </h6>
+
+                            <h5>
+                                #<%= ultimaVenta?.id || "-" %>
+                            </h5>
+
+                            <small>
+                                $<%= ultimaVenta?.total || 0 %>
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TABLAS -->
+            <div class="row g-4">
+
+                <!-- PRODUCTOS TOP -->
+                <div class="col-md-6">
+
+                    <div class="card shadow-sm border-0">
+
+                        <div class="card-body">
+
+                            <h5 class="mb-4">
+                                Productos Más Vendidos
+                            </h5>
+
+                            <table class="table">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Vendidos</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <% productosTop.forEach(producto => { %>
+
+                                        <tr>
+
+                                            <td>
+                                                <%= producto.producto_nombre %>
+                                            </td>
+
+                                            <td>
+                                                <%= producto.total_vendidos %>
+                                            </td>
+
+                                        </tr>
+
+                                    <% }) %>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- MÉTODOS PAGO -->
+                <div class="col-md-6">
+
+                    <div class="card shadow-sm border-0">
+
+                        <div class="card-body">
+
+                            <h5 class="mb-4">
+                                Métodos de Pago
+                            </h5>
+
+                            <table class="table">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Ventas</th>
+                                        <th>Total</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <% metodosPago.forEach(metodo => { %>
+
+                                        <tr>
+
+                                            <td>
+                                                <%= metodo.metodo_pago %>
+                                            </td>
+
+                                            <td>
+                                                <%= metodo.cantidad %>
+                                            </td>
+
+                                            <td>
+                                                $<%= metodo.total %>
+                                            </td>
+
+                                        </tr>
+
+                                    <% }) %>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- VENTAS SEMANA -->
+            <div class="card shadow-sm border-0 mt-4">
+
+                <div class="card-body">
+
+                    <h5 class="mb-4">
+                        Ventas Últimos 7 Días
+                    </h5>
+
+                    <table class="table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Día</th>
+                                <th>Total</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <% ventasSemana.forEach(dia => { %>
+
+                                <tr>
+
+                                    <td>
+                                        <%= dia.dia %>
+                                    </td>
+
+                                    <td>
+                                        $<%= dia.total %>
+                                    </td>
+
+                                </tr>
+
+                            <% }) %>
+
+                        </tbody>
+
+                    </table>
 
                 </div>
 

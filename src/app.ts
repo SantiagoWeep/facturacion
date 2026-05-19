@@ -8,6 +8,7 @@ import adminRoutes from "./routes/adminRoutes";
 import ventasRoutes from "./routes/ventasRoutes";
 import productosRoutes from "./routes/productosRoutes";
 import apiVentasRoutes from "./routes/apiVentasRoutes";
+import dashboardRoutes from "./routes/dashboardRoutes";
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use("/admin", adminRoutes);
 app.use("/ventas", ventasRoutes);
 app.use("/admin/productos", productosRoutes);
 app.use("/api/ventas", apiVentasRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("POS funcionando");

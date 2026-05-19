@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+
+<style>
+
+#resultadoBusqueda {
+
+    position: absolute;
+
+    width: 100%;
+
+    z-index: 9999;
+
+}
+
+</style>
 <html lang="es">
 
 <%- include('../partials/head') %>
@@ -36,16 +50,18 @@
                                         Producto
                                     </label>
 
-                                    <select
-                                        id="productoSelect"
-                                        class="form-select"
+                                    <input
+                                        type="text"
+                                        id="buscadorProducto"
+                                        class="form-control"
+                                        placeholder="Buscar producto..."
+                                        autocomplete="off"
                                     >
 
-                                        <option value="">
-                                            Seleccionar producto
-                                        </option>
-
-                                    </select>
+                                    <div
+                                        id="resultadoBusqueda"
+                                        class="list-group mt-2"
+                                    ></div>
 
                                       <div class="mt-3">
 
@@ -251,27 +267,150 @@ let productos = [];
 
 let carrito = [];
 let modoManual = false;
+let productoSeleccionado = null;
+
+const buscador =
+    document.getElementById(
+        "buscadorProducto"
+    );
+
+const resultados =
+    document.getElementById(
+        "resultadoBusqueda"
+    );
+
+buscador.addEventListener(
+    "input",
+    () => {
+
+        const texto =
+            buscador.value
+                .toLowerCase();
+
+        resultados.innerHTML = "";
+
+        if (texto.length < 1) {
+
+            return;
+
+        }
+
+        const filtrados =
+            productos.filter(producto => {
+
+                return (
+                    producto.nombre
+                        .toLowerCase()
+                        .includes(texto)
+
+                    ||
+
+                    (producto.categoria || "")
+                        .toLowerCase()
+                        .includes(texto)
+                );
+
+            });
+
+        filtrados
+            .slice(0, 5)
+            .forEach(producto => {
+
+                resultados.innerHTML += `
+                    <button
+                        type="button"
+                        class="list-group-item list-group-item-action"
+                        onclick="seleccionarProducto(${producto.id})"
+                    >
+
+                        <strong>
+                            ${producto.nombre}
+                        </strong>
+
+                        <br>
+
+                        <small>
+                            ${producto.categoria || ''}
+                        </small>
+
+                        -
+                        $${producto.precio}
+
+                    </button>
+                `;
+
+            });
+
+    }
+);
+
+buscador.addEventListener(
+    "keydown",
+    (e) => {
+
+        if (
+            e.key === "Enter"
+            &&
+            productoSeleccionado
+        ) {
+
+            document
+                .getElementById(
+                    "agregarBtn"
+                )
+                .click();
+
+        }
+
+    }
+);
+
+function seleccionarProducto(id) {
+
+    const producto =
+        productos.find(
+            p => p.id == id
+        );
+
+    if (!producto) return;
+
+    productoSeleccionado =
+        producto;
+
+    buscador.value =
+        producto.nombre;
+
+    resultados.innerHTML = "";
+
+}
 
 async function cargarProductos() {
 
-    const response = await fetch("/productos");
+    try {
 
-    productos = await response.json();
+        const response =
+            await fetch(
+                "/admin/productos/api"
+            );
 
-    const select = document.getElementById("productoSelect");
+        if (!response.ok) {
 
-    productos.forEach(producto => {
+            throw new Error(
+                "Error cargando productos"
+            );
 
-        const option = document.createElement("option");
+        }
 
-        option.value = producto.id;
+        productos =
+            await response.json();
 
-        option.textContent =
-            `${producto.nombre} - $${producto.precio}`;
+        console.log(productos);
 
-        select.appendChild(option);
+    } catch (error) {
 
-    });
+        console.log(error);
+
+    }
 
 }
 
@@ -398,21 +537,16 @@ document
 
     } else {
 
-        const productoId =
-            document.getElementById("productoSelect").value;
+        if (!productoSeleccionado) {
 
-        if (!productoId) {
+    alert("Seleccionar producto");
 
-            alert("Seleccionar producto");
+    return;
 
-            return;
+}
 
-        }
-
-        const producto =
-            productos.find(
-                p => p.id == productoId
-            );
+const producto =
+    productoSeleccionado;
 
         carrito.push({
 
@@ -425,6 +559,12 @@ document
             cantidad
 
         });
+
+        productoSeleccionado = null;
+
+buscador.value = "";
+
+resultados.innerHTML = "";
 
     }
 
