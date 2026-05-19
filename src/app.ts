@@ -9,7 +9,7 @@ import ventasRoutes from "./routes/ventasRoutes";
 import productosRoutes from "./routes/productosRoutes";
 import apiVentasRoutes from "./routes/apiVentasRoutes";
 import dashboardRoutes from "./routes/dashboardRoutes";
-
+import cajaRoutes from "./routes/cajaRoutes";
 dotenv.config();
 
 const app = express();
@@ -50,6 +50,7 @@ app.use("/ventas", ventasRoutes);
 app.use("/admin/productos", productosRoutes);
 app.use("/api/ventas", apiVentasRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/admin/caja", cajaRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("POS funcionando");
@@ -59,6 +60,5 @@ const PORT = process.env.PORT || 3434;
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
-  console.log(process.env.PRINTER_NAME);
   
 });

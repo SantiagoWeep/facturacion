@@ -1,0 +1,371 @@
+<!-- views/admin/caja.ejs -->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<%- include('../partials/head') %>
+
+<body class="bg-light">
+
+<div class="d-flex">
+
+    <%- include('../partials/sidebar') %>
+
+    <div class="flex-grow-1">
+
+        <%- include('../partials/navbar') %>
+
+        <div class="container-fluid p-4">
+
+            <h2 class="mb-4">
+                Caja
+            </h2>
+
+            <% if(!caja) { %>
+
+                <div class="card shadow-sm border-0 col-md-4">
+
+                    <div class="card-body">
+
+                        <h4 class="mb-4">
+                            Abrir Caja
+                        </h4>
+
+                        <form
+                            action="/admin/caja/abrir"
+                            method="POST"
+                        >
+
+                            <div class="mb-3">
+
+                                <label>
+                                    Monto inicial
+                                </label>
+
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="monto_inicial"
+                                    class="form-control"
+                                    required
+                                >
+
+                            </div>
+
+                            <button class="btn btn-dark w-100">
+                                Abrir Caja
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            <% } else { %>
+
+                <!-- CARDS -->
+
+                <div class="row g-4 mb-4">
+
+                    <div class="col-md-3">
+
+                        <div class="card border-0 shadow-sm">
+
+                            <div class="card-body">
+
+                                <h6 class="text-muted">
+                                    Caja abierta
+                                </h6>
+
+                                <h5>
+                                    <%= caja.usuario_nombre %>
+                                </h5>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="card border-0 shadow-sm">
+
+                            <div class="card-body">
+
+                                <h6 class="text-muted">
+                                    Monto Inicial
+                                </h6>
+
+                                <h4>
+                                    $<%= caja.monto_inicial %>
+                                </h4>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="card border-0 shadow-sm">
+
+                            <div class="card-body">
+
+                                <h6 class="text-muted">
+                                    Ventas Efectivo
+                                </h6>
+
+                                <h4>
+                                    $<%= caja.ventas_efectivo %>
+                                </h4>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="card border-0 shadow-sm">
+
+                            <div class="card-body">
+
+                                <h6 class="text-muted">
+                                    Dinero Esperado
+                                </h6>
+
+                                <h4>
+                                    $<%= dineroEsperado %>
+                                </h4>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- MOVIMIENTO -->
+
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-body">
+
+                        <h5 class="mb-4">
+                            Nuevo Movimiento
+                        </h5>
+
+                        <form
+                            action="/admin/caja/movimiento"
+                            method="POST"
+                        >
+
+                            <div class="row">
+
+                                <div class="col-md-2">
+
+                                    <select
+                                        name="tipo"
+                                        class="form-select"
+                                    >
+                                        <option value="INGRESO">
+                                            INGRESO
+                                        </option>
+
+                                        <option value="EGRESO">
+                                            EGRESO
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <input
+                                        type="text"
+                                        name="descripcion"
+                                        placeholder="Descripción"
+                                        class="form-control"
+                                        required
+                                    >
+
+                                </div>
+
+                                <div class="col-md-2">
+
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        name="monto"
+                                        class="form-control"
+                                        required
+                                    >
+
+                                </div>
+
+                                <div class="col-md-2">
+
+                                    <button class="btn btn-dark w-100">
+                                        Guardar
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <!-- TABLA -->
+
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-body">
+
+                        <h5 class="mb-4">
+                            Movimientos
+                        </h5>
+
+                        <table class="table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Fecha</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <% movimientos.forEach(m => { %>
+
+                                    <tr>
+
+                                        <td>
+                                            <%= m.tipo %>
+                                        </td>
+
+                                        <td>
+                                            <%= m.descripcion %>
+                                        </td>
+
+                                        <td>
+                                            $<%= m.monto %>
+                                        </td>
+
+                                        <td>
+                                            <%= m.fecha %>
+                                        </td>
+
+                                    </tr>
+
+                                <% }) %>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <!-- CERRAR -->
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="mb-4">
+                            Cerrar Caja
+                        </h5>
+
+                        <form
+                            action="/admin/caja/cerrar"
+                            method="POST"
+                        >
+
+                            <div class="row">
+
+                                <div class="col-md-4">
+
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        name="monto_final"
+                                        class="form-control"
+                                        placeholder="Dinero contado"
+                                        required
+                                    >
+
+                                </div>
+                                
+
+                                <div class="col-md-3">
+
+                                    
+
+                                    <button class="btn btn-danger">
+                                        Cerrar Caja
+                                    </button>
+                                    
+
+                                </div>
+                                
+
+                            </div>
+                            
+
+                        </form>
+                        
+
+                    </div>
+                    <div class="alert alert-secondary">
+
+    <p>
+        Dinero esperado:
+        <strong>
+            $<%= dineroEsperado %>
+        </strong>
+    </p>
+
+    <p>
+        Ingresos:
+        <strong>
+            $<%= ingresos %>
+        </strong>
+    </p>
+
+    <p>
+        Egresos:
+        <strong>
+            $<%= egresos %>
+        </strong>
+    </p>
+
+</div>
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

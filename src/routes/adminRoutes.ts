@@ -9,9 +9,6 @@ import {
 
 const router = Router();
 
-router.get("/dashboard", verifyToken, (req, res) => {
-    res.render("admin/dashboard");
-});
 
 router.get("/ventas", verifyToken, obtenerVentas);
 
