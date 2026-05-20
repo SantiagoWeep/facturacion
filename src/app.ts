@@ -10,6 +10,7 @@ import productosRoutes from "./routes/productosRoutes";
 import apiVentasRoutes from "./routes/apiVentasRoutes";
 import dashboardRoutes from "./routes/dashboardRoutes";
 import cajaRoutes from "./routes/cajaRoutes";
+import jwt from "jsonwebtoken";
 dotenv.config();
 
 const app = express();
@@ -52,8 +53,30 @@ app.use("/api/ventas", apiVentasRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/admin/caja", cajaRoutes);
 
+
 app.get("/", (req: Request, res: Response) => {
-  res.send("POS funcionando");
+
+    const token = req.cookies?.token;
+
+    if (!token) {
+        return res.render("auth/login");
+    }
+
+    try {
+
+        jwt.verify(
+            token,
+            process.env.JWT_SECRET as string
+        );
+
+        return res.redirect("/dashboard");
+
+    } catch {
+
+        return res.render("auth/login");
+
+    }
+
 });
 
 const PORT = process.env.PORT || 3434;
