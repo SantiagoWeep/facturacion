@@ -3,139 +3,197 @@
 <head>
     <%- include('../partials/head') %>
     <title>Ticket #<%= venta.id %></title>
-    <style>
-   @page {
-    size: 57mm auto;
-    margin: 0;
-}
-
-* {
-    font-weight: bold !important;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    width: 48mm;
-    max-width: 48mm;
-    margin: 0 auto;
-    padding: 4px 2px;
-    line-height: 1.2;
-    color: #000;
-}
-
-.ticket {
-    text-align: center;
-}
-
-h3 {
-    margin: 5px 0 3px 0;
-    font-size: 13px;
-}
-
-p {
-    margin: 3px 0;
-}
-
-.text-left {
-    text-align: left;
-    word-break: break-word;
-}
-
-.text-right {
-    text-align: right;
-}
-
-hr {
-    border: 0;
-    border-top: 1px dashed #000;
-    margin: 6px 0;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    font-size: 11px;
-}
-
-th, td {
-    padding: 1px 0;
-    overflow-wrap: break-word;
-}
-
-.total {
-    font-size: 15px;
-}
-
-.footer {
-    margin-top: 10px;
-    font-size: 11px;
-}
-
-.cut-space {
-    height: 35px;
-}
-
-@media print {
-    body {
+<style>
+    @page {
+        size: 57mm auto;
         margin: 0;
-        padding: 4px 2px;
     }
 
-    .no-print {
-        display: none;
+    * {
+        box-sizing: border-box;
+        font-weight: bold !important;
     }
-}
-    </style>
-</head>
-<body>
-    <div class="ticket">
-        <h3>TIENDA JAZMIN</h3>
-        <p>Jardin America</p>
-        <hr>
-        
-        <p class="text-left">Fecha: <%= new Date(venta.fecha).toLocaleString('es-AR') %></p>
-        <p class="text-left">Pago: <%= venta.metodo_pago %></p>
-        <hr>
 
-        <table>
-            <thead>
-                <tr>
-                    <th class="text-left">Prod</th>
-                    <th>C</th>
-                    <th>P</th>
-                    <th class="text-right">Sub</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% detalles.forEach(item => { %>
-                <tr>
-                    <td class="text-left"><%= item.producto_nombre %></td>
-                    <td><%= item.cantidad %></td>
-                    <td><%= Number(item.precio_unitario).toFixed(0) %></td>
-                    <td class="text-right">$<%= Number(item.subtotal).toFixed(0) %></td>
-                </tr>
-                <% }) %>
-            </tbody>
-        </table>
+    body {
+        font-family: Arial, sans-serif;
+        width: 40mm;
+        max-width: 40mm;
+        margin: 0 auto;
+        padding: 2px;
+        font-size: 10px;
+        line-height: 1.1;
+        color: #000;
+    }
 
-        <hr>
-        <p class="total text-right">TOTAL: $<%= Number(venta.total).toFixed(0) %></p>
-        <hr>
-        
-        <p class="footer">¡Gracias por su compra!</p>
-        <p class="footer">Venta #<%= venta.id %></p>
-        
-        <!-- Espacio importante para el corte del papel -->
-        <div class="cut-space"></div>
-    </div>
+    .ticket {
+        text-align: center;
+    }
 
-    <script>
-        window.onload = function() {
-            window.print();
+    .logo {
+        width: 70px;
+        display: block;
+        margin: 0 auto 4px auto;
+    }
+
+    .qr {
+        width: 70px;
+        display: block;
+        margin: 8px auto;
+    }
+
+    h3 {
+        margin: 2px 0;
+        font-size: 11px;
+    }
+
+    p {
+        margin: 2px 0;
+    }
+
+    .text-left {
+        text-align: left;
+        word-break: break-word;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px dashed #000;
+        margin: 4px 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        font-size: 9px;
+    }
+
+    th,
+    td {
+        padding: 1px 0;
+        overflow-wrap: break-word;
+    }
+
+    .total {
+        font-size: 12px;
+    }
+
+    .footer {
+        font-size: 9px;
+        margin-top: 5px;
+    }
+
+    .cut-space {
+        height: 30px;
+    }
+
+    @media print {
+        body {
+            width: 40mm;
+            max-width: 40mm;
+            padding: 2px;
+            margin: 0 auto;
         }
-    </script>
+
+        .no-print {
+            display: none;
+        }
+    }
+</style>
+<div class="ticket">
+
+    <img src="/imagenes/ropa.webp" class="logo" alt="Logo">
+
+    <h3>TIENDA JAZMIN</h3>
+
+    <p>Av. Uruguay 527</p>
+    <p>Jardín América - Misiones</p>
+
+    <hr>
+
+    <p class="text-left">
+        Fecha: <%= new Date(venta.fecha).toLocaleString('es-AR') %>
+    </p>
+
+    <p class="text-left">
+        Pago: <%= venta.metodo_pago %>
+    </p>
+
+    <p class="text-left">
+        Ticket: #<%= venta.id %>
+    </p>
+
+    <hr>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="text-left">Prod</th>
+                <th>C</th>
+                <th>P</th>
+                <th class="text-right">Sub</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% detalles.forEach(item => { %>
+
+            <tr>
+                <td class="text-left">
+                    <%= item.producto_nombre %>
+                </td>
+
+                <td>
+                    <%= item.cantidad %>
+                </td>
+
+                <td class="text-left">
+                    $<%= Number(item.precio_unitario).toFixed(0) %>
+                </td>
+
+                <td class="text-right">
+                    $<%= Number(item.subtotal).toFixed(0) %>
+                </td>
+            </tr>
+
+            <% }) %>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <p class="total text-left">
+        TOTAL: $<%= Number(venta.total).toFixed(0) %>
+    </p>
+
+    <hr>
+
+    <p class="footer">
+        ¡Gracias por elegirnos!
+    </p>
+
+    <p class="footer">
+        Síganos en Instagram
+    </p>
+
+    <img src="/imagenes/ig.jpeg" class="qr" alt="Instagram">
+
+    <p class="footer">
+        No valido como factura.
+    </p>
+
+    <div class="cut-space"></div>
+
+</div>
+
+<script>
+    window.onload = function() {
+        window.print();
+    }
+</script>
 </body>
 </html>
