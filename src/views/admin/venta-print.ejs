@@ -72,15 +72,31 @@
         font-size: 9px;
     }
 
-    th,
-    td {
-        padding: 1px 0;
-        overflow-wrap: break-word;
-    }
+  th:nth-child(1),
+td:nth-child(1) {
+    width: 70%;
+}
 
-    .total {
-        font-size: 12px;
-    }
+th:nth-child(2),
+td:nth-child(2) {
+    width: 30%;
+    text-align: right;
+}
+
+small {
+    font-size: 7px;
+}
+
+tbody td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+    
+
+  .total {
+    font-size: 14px;
+    font-weight: 900 !important;
+}
 
     .footer {
         font-size: 9px;
@@ -106,7 +122,7 @@
 </style>
 <div class="ticket">
 
-    <img src="/imagenes/ropa.webp" class="logo" alt="Logo">
+    <img src="/imagenes/logo.png" class="logo" alt="Logo">
 
     <h3>TIENDA JAZMIN</h3>
 
@@ -132,10 +148,9 @@
     <table>
         <thead>
             <tr>
-                <th class="text-left">Prod</th>
-                <th>C</th>
-                <th>P</th>
-                <th class="text-right">Sub</th>
+                <th class="text-left">Prod.</th>                
+                
+                <th class="text-right">Subt.</th>
             </tr>
         </thead>
 
@@ -144,20 +159,15 @@
 
             <tr>
                 <td class="text-left">
-                    <%= item.producto_nombre %>
-                </td>
+                <%= item.producto_nombre %><br>
+                <small>
+                    <%= item.cantidad %> x $<%= Number(item.precio_unitario).toFixed(0) %>
+                </small>
+            </td>
 
-                <td>
-                    <%= item.cantidad %>
-                </td>
-
-                <td class="text-left">
-                    $<%= Number(item.precio_unitario).toFixed(0) %>
-                </td>
-
-                <td class="text-right">
-                    $<%= Number(item.subtotal).toFixed(0) %>
-                </td>
+            <td class="text-right">
+                $<%= Number(item.subtotal).toFixed(0) %>
+            </td>
             </tr>
 
             <% }) %>
